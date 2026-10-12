@@ -36,7 +36,12 @@
     i.setAttribute('aria-hidden', 'true');
     return i;
   }
-  var ask = function (t) { if (typeof sendPrompt === 'function') sendPrompt(t); };
+  // The host wires sendPrompt only into code written inside the widget, so the
+  // widget defines window.jerryAsk as a bridge; fall back to a global sendPrompt.
+  var ask = function (t) {
+    if (typeof window.jerryAsk === 'function') return window.jerryAsk(t);
+    if (typeof window.sendPrompt === 'function') return window.sendPrompt(t);
+  };
 
   function panel() {
     var w = el('div', 'jc jw');
