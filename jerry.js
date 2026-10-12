@@ -17,7 +17,11 @@
     '.g{font-size:13px;color:var(--text-secondary);margin:1rem 0 6px;font-weight:500}' +
     '.r{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:.5px solid var(--border)}' +
     '.r input{flex:none}.b{flex:1;min-width:0}.t{font-size:15px;line-height:1.5}' +
-    '.m{font-size:12px;color:var(--text-muted)}.m.late{color:var(--text-warning)}' +
+    '.m{font-size:12px;color:var(--text-muted)}' +
+    '.r.u2{border-right:3px solid var(--fill-danger);padding-right:10px}.r.u2 .m{color:var(--text-danger)}' +
+    '.r.u1{border-right:3px solid var(--fill-warning);padding-right:10px}.r.u1 .m{color:var(--text-warning)}' +
+    '.bd{display:inline-block;font-size:11px;padding:1px 8px;border-radius:var(--radius);margin-left:6px;vertical-align:1px}' +
+    '.u2 .bd{background:var(--bg-danger);color:var(--text-danger)}.u1 .bd{background:var(--bg-warning);color:var(--text-warning)}' +
     '.r.done .t{text-decoration:line-through;color:var(--text-muted)}' +
     '.r.start{background:var(--bg-accent)}.r.start .t{color:var(--text-accent)}' +
     '.s{font-size:12px;padding:4px 10px;flex:none}' +
@@ -79,11 +83,15 @@
     (j.g || []).forEach(function (grp) {
       root.appendChild(el('p', 'g', grp[0]));
       grp[1].forEach(function (it) {
-        var r = el('div', 'r');
+        var lv = it.l === true ? 2 : (it.l || 0);
+        var r = el('div', 'r' + (lv ? ' u' + lv : ''));
         var c = el('input'); c.type = 'checkbox'; c.setAttribute('aria-label', 'בוצע');
         var b = el('div', 'b');
-        b.appendChild(el('div', 't', it.d));
-        if (it.m) b.appendChild(el('div', 'm' + (it.l ? ' late' : ''), it.m));
+        var tl = el('div', 't');
+        if (it.b) tl.appendChild(el('span', 'bd', it.b));
+        tl.appendChild(document.createTextNode(it.d));
+        b.appendChild(tl);
+        if (it.m) b.appendChild(el('div', 'm', it.m));
         var s = el('button', 's', 'להתחיל');
         r.appendChild(c); r.appendChild(b); r.appendChild(s);
         r._line = '- [' + it.s + '] ' + it.t;
